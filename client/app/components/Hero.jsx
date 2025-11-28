@@ -43,9 +43,9 @@ export default function Hero() {
           <Image
             src="/images/img1.png"
             alt="devhub banner"
-            width={150}
-            height={150}
-            className="w-32 sm:w-44 lg:w-56 opacity-90"
+            width={300}
+            height={300}
+            className="w-60 opacity-90"
           />
         </motion.div>
       </div>
