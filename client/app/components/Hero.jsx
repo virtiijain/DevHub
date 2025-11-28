@@ -18,8 +18,10 @@ export default function Hero() {
           </h1>
 
           <p className="text-sm sm:text-base lg:text-lg mb-6 tracking-normal text-center sm:text-left">
-            Share tech memes, participate in coding challenges, and get answers from experienced developers. <br />
-            Track your progress, earn badges, and join a fun, interactive developer community.
+            Share tech memes, participate in coding challenges, and get answers
+            from experienced developers. <br />
+            Track your progress, earn badges, and join a fun, interactive
+            developer community.
           </p>
 
           <div className="flex justify-center sm:justify-start">
