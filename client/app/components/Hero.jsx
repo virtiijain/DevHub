@@ -9,8 +9,8 @@ export default function Hero() {
       <div className="relative bg-[#1A1A1A] p-8 sm:p-12 lg:p-20 rounded-3xl max-w-4xl lg:max-w-7xl overflow-hidden">
         <div className="relative z-20">
           <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-8 text-center sm:text-left">
-            <p className="text-sm sm:text-base">DEV COMMUNITY HUB</p>
-            <p className="text-sm sm:text-base">Share | Challenge | Learn</p>
+            <p className="text-sm sm:text-base">BUILD IN PUBLIC</p>
+            <p className="text-sm sm:text-base">Ask Devs • Share Progress</p>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-8xl font-bold leading-tight text-center sm:text-left">
@@ -18,10 +18,9 @@ export default function Hero() {
           </h1>
 
           <p className="text-sm sm:text-base lg:text-lg mb-6 tracking-normal text-center sm:text-left">
-            Share tech memes, participate in coding challenges, and get answers
-            from experienced developers. <br />
-            Track your progress, earn badges, and join a fun, interactive
-            developer community.
+            Post your work, ask technical doubts, and connect with developers
+            who are building real projects. Get feedback, improve faster, and
+            grow with the community.
           </p>
 
           <div className="flex justify-center sm:justify-start">

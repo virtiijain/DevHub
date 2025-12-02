@@ -2,69 +2,68 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "../../context/UserContext";
+import { login } from "../../utils/api";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useUser();
 
   const handleLogin = async () => {
-    try {
-      const res = await fetch("http://localhost:8000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.detail || "Login failed");
-        return;
-      }
-
-      localStorage.setItem("devhubUser", JSON.stringify(data));
-      alert(`Welcome, ${data.username}!`);
+    const res = await login({ email, password });
+    if (res.user) {
+      localStorage.setItem("token", res.token);
+      setUser(res.user);
       router.push("/profile");
-    } catch (err) {
-      setError("Something went wrong. Try again.");
+    } else {
+      setError(res.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 gap-4">
-      <h1 className="text-3xl font-bold">Log In to DevHub</h1>
-      {error && <p className="text-red-500">{error}</p>}
-      <input
-        type="email"
-        placeholder="Email"
-        className="p-2 border rounded w-80"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="p-2 border rounded w-80"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button
-        onClick={handleLogin}
-        className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 w-80"
-      >
-        Log In
-      </button>
-      <p className="text-sm opacity-80">
-        Don’t have an account?{" "}
-        <span
-          className="text-blue-600 cursor-pointer"
-          onClick={() => router.push("/signup")}
+    <div className="min-h-screen text-black flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-6">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
+          Log In to DevHub
+        </h1>
+
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+        <input
+          type="email"
+          placeholder="Email"
+          className="p-3 border border-gray-300 rounded-lg w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="p-3 border border-gray-300 rounded-lg w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button
+          onClick={handleLogin}
+          className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
         >
-          Sign up
-        </span>
-      </p>
+          Log In
+        </button>
+
+        <p className="text-sm text-center text-gray-600 mt-4">
+          Don’t have an account?{" "}
+          <span
+            className="text-blue-600 cursor-pointer hover:underline"
+            onClick={() => router.push("/signup")}
+          >
+            Sign up
+          </span>
+        </p>
+      </div>
     </div>
   );
 }

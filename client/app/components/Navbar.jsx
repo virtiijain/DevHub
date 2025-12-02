@@ -1,27 +1,55 @@
 "use client";
-
+import { useUser } from "../../context/UserContext";
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
-export default function Navbar({ user, setUser }) { 
+export default function Navbar() {
+  const { user, logout, loading } = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  if (loading) return null;
+
+  const commonLinks = [
+    { href: "/", label: "Home" },
+    { href: "/build-in-public", label: "Build in Public" },
+    { href: "/ask", label: "Ask a Dev" },
+  ];
+
+  const authLinks = !user
+    ? [
+        { href: "/login", label: "Login" },
+        { href: "/signup", label: "Signup" },
+      ]
+    : [
+        { href: "/profile", label: "Profile" },
+        { href: "#", label: "Logout", action: logout, isButton: true },
+      ];
+
+  const handleClick = (action) => {
+    if (action) action();
+    setMenuOpen(false);
+  };
 
   return (
     <nav className="flex justify-between items-center py-6 px-8 relative">
       <h1 className="text-2xl uppercase tracking-wide font-bold">DevHub</h1>
 
       <div className="hidden md:flex space-x-8 text-base font-medium">
-        <Link href="/">Home</Link>
-        <Link href="/build-in-public">Build in Public</Link>
-        <Link href="/ask">Ask a Dev</Link>
-        {user ? (
-          <Link href="/profile">Profile</Link>
-        ) : (
-          <>
-            <Link href="/login">Login</Link>
-            <Link href="/signup">Signup</Link>
-          </>
+        {[...commonLinks, ...authLinks].map((item, idx) =>
+          item.isButton ? (
+            <button
+              key={idx}
+              onClick={() => handleClick(item.action)}
+              className="text-red-600"
+            >
+              {item.label}
+            </button>
+          ) : (
+            <Link key={idx} href={item.href}>
+              {item.label}
+            </Link>
+          )
         )}
       </div>
 
@@ -33,17 +61,25 @@ export default function Navbar({ user, setUser }) {
       </button>
 
       {menuOpen && (
-        <div className="absolute top-20 left-0 w-full bg-blue-700 flex flex-col items-left pl-8 space-y-6 py-6 font-medium shadow-md md:hidden z-50">
-          <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link href="/build-in-public" onClick={() => setMenuOpen(false)}>Build in Public</Link>
-          <Link href="/ask" onClick={() => setMenuOpen(false)}>Ask a Dev</Link>
-          {user ? (
-            <Link href="/profile" onClick={() => setMenuOpen(false)}>Profile</Link>
-          ) : (
-            <>
-              <Link href="/login" onClick={() => setMenuOpen(false)}>Login</Link>
-              <Link href="/signup" onClick={() => setMenuOpen(false)}>Signup</Link>
-            </>
+        <div className="absolute top-20 left-0 w-full bg-blue-700 text-white flex flex-col pl-8 space-y-6 py-6 font-medium shadow-md md:hidden z-50">
+          {[...commonLinks, ...authLinks].map((item, idx) =>
+            item.isButton ? (
+              <button
+                key={idx}
+                onClick={() => handleClick(item.action)}
+                className="text-left text-red-300"
+              >
+                {item.label}
+              </button>
+            ) : (
+              <Link
+                key={idx}
+                href={item.href}
+                onClick={() => handleClick(item.action)}
+              >
+                {item.label}
+              </Link>
+            )
           )}
         </div>
       )}

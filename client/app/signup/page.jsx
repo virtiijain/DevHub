@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signup } from "../../utils/api";
+import { useUser } from "../../context/UserContext";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -9,69 +11,67 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useUser();
 
   const handleSignup = async () => {
-    try {
-      const res = await fetch("http://localhost:8000/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.detail || "Signup failed");
-        return;
-      }
-
-      alert("Signup successful!");
-      router.push("/login");
-    } catch (err) {
-      setError("Something went wrong. Try again.");
+    const res = await signup({ username, email, password });
+    if (res.user) {
+      localStorage.setItem("token", res.token);
+      setUser(res.user);
+      router.push("/profile");
+    } else {
+      setError(res.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 gap-4 ">
-      <h1 className="text-3xl font-bold">Sign Up to DevHub</h1>
-      {error && <p className="text-red-500">{error}</p>}
-      <input
-        type="text"
-        placeholder="Username"
-        className="p-2 border rounded w-80"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        className="p-2 border rounded w-80"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="p-2 border rounded w-80"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button
-        onClick={handleSignup}
-        className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 w-80"
-      >
-        Sign Up
-      </button>
-      <p className="text-sm opacity-80">
-        Already have an account?{" "}
-        <span
-          className="text-blue-600 cursor-pointer"
-          onClick={() => router.push("/login")}
+    <div className="min-h-screen text-black flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-6">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
+          Sign Up to DevHub
+        </h1>
+
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+        <input
+          type="text"
+          placeholder="Username"
+          className="p-3 border border-gray-300 rounded-lg w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          className="p-3 border border-gray-300 rounded-lg w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="p-3 border border-gray-300 rounded-lg w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button
+          onClick={handleSignup}
+          className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
         >
-          Log in
-        </span>
-      </p>
+          Sign Up
+        </button>
+
+        <p className="text-sm text-center text-gray-600 mt-4">
+          Already have an account?{" "}
+          <span
+            className="text-blue-600 cursor-pointer hover:underline"
+            onClick={() => router.push("/login")}
+          >
+            Log in
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
