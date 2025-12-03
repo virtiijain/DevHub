@@ -1,4 +1,3 @@
-// server/models/User.js
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -8,6 +7,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     email: {
       type: String,
       required: true,
@@ -15,15 +15,47 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+
     password: {
       type: String,
       required: true,
     },
+
+    // PROFILE FIELDS
+    name: {
+      type: String,
+      default: "",
+    },
+
+    bio: {
+      type: String,
+      default: "",
+    },
+
+    avatar: {
+      type: String,
+      default: "",
+    },
+
+    skills: {
+      type: [String],
+      default: [],
+    },
+
+    projects: {
+      type: [
+        {
+          name: String,
+          desc: String,
+          link: String,
+        },
+      ],
+      default: [],
+    },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 
-const User = mongoose.model("User", userSchema);
-export default User;
+export default mongoose.models.User || mongoose.model("User", userSchema);

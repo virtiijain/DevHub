@@ -25,7 +25,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen text-black flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-6">
+    <div className="min-h-screen text-black flex flex-col items-center justify-center p-6">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
           Sign Up to DevHub

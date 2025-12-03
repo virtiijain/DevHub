@@ -41,7 +41,7 @@ export default function Navbar() {
             <button
               key={idx}
               onClick={() => handleClick(item.action)}
-              className="text-red-600"
+              className="text-gray-300 cursor-pointer underline-offset-4 hover:underline"
             >
               {item.label}
             </button>
