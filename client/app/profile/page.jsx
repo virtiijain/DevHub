@@ -55,7 +55,6 @@ export default function ProfilePage() {
     fetchProfile();
   }, [token]);
 
-  // Update fields
   const updateField = async (field, value) => {
     try {
       const res = await fetch("http://localhost:8080/api/profile", {
@@ -73,7 +72,6 @@ export default function ProfilePage() {
     }
   };
 
-  // Add skill
   const addSkill = async () => {
     if (!newSkill.trim()) return;
     try {
@@ -93,7 +91,6 @@ export default function ProfilePage() {
     }
   };
 
-  // Add project
   const addProject = async () => {
     const { name, desc, link } = newProject;
     if (!name.trim() || !desc.trim()) return;
@@ -117,7 +114,7 @@ export default function ProfilePage() {
   if (loading) return <p>Loading...</p>;
   return (
     <div className="min-h-screen px-6 py-10">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-semibold tracking-tight">
           Developer Profile
         </h1>
