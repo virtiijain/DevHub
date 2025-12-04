@@ -21,7 +21,6 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    // PROFILE FIELDS
     name: {
       type: String,
       default: "",

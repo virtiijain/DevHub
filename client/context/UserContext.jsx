@@ -1,4 +1,5 @@
 "use client";
+
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -9,21 +10,25 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  // LOAD USER ON REFRESH
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token) {
-      fetch("http://localhost:8080/api/auth/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.user) setUser(data.user);
-        })
-        .finally(() => setLoading(false));
-    } else {
+    if (!token) {
       setLoading(false);
+      return;
     }
+
+    fetch("http://localhost:8080/api/auth/profile", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.user) {
+          setUser(data.user);
+        }
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const logout = () => {
@@ -33,7 +38,14 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout, loading }}>
+    <UserContext.Provider
+      value={{
+        user,          // <-- THE MAIN USER OBJECT
+        setUser,
+        logout,
+        loading,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
