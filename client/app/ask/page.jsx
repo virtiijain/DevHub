@@ -127,35 +127,35 @@ export default function AskADev() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 py-10 text-white">
-        <h1 className="text-4xl font-bold mb-10 text-white drop-shadow-2xl text-left">
+    <div className="min-h-screen bg-[#0147FF] px-4 py-10 text-white">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold mb-10 drop-shadow-lg">
           Developer Community{" "}
-          <span className="text-base text-gray-200">Q & A</span>
+          <span className="text-base text-white/70">Q & A</span>
         </h1>
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           {questions.map((q) => (
             <div
               key={q._id}
-              className="bg-black/20 backdrop-blur-xl p-6 rounded-2xl shadow-lg transition"
+              className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300"
             >
-              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                <div className="flex-1">
-                  <h3 className="text-2xl font-semibold text-white">
+              <div className="flex flex-col md:flex-row md:justify-between gap-6">
+                <div className="flex-1 space-y-2">
+                  <h3 className="text-xl md:text-2xl font-semibold">
                     {q.title}
                   </h3>
-                  <p className="text-gray-200 text-base mt-1">
+                  <p className="text-white/70 text-sm">
                     Asked by{" "}
-                    <span className="text-white font-medium">{q.user}</span> •{" "}
+                    <span className="font-medium text-white">{q.user}</span> •{" "}
                     {formatTimeAgo(q.createdAt)}
                   </p>
-                  <p className="mt-3 text-gray-100">{q.description}</p>
-                  <div className="flex gap-2 mt-4 flex-wrap">
+                  <p className="text-white/90">{q.description}</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
                     {q.tags.map((tag, i) => (
                       <span
                         key={i}
-                        className="px-3 py-1 bg-blue-400/70 transition rounded-full text-xs font-medium"
+                        className="px-3 py-1 bg-gradient-to-tr from-[#0178FF] to-[#00CFFF] rounded-full text-xs font-medium text-white transition hover:scale-105"
                       >
                         {tag}
                       </span>
@@ -163,11 +163,11 @@ export default function AskADev() {
                   </div>
                 </div>
 
-                <div className="flex flex-col items-start md:items-end gap-3">
-                  <div className="flex items-center gap-2 border-white/10 bg-white/20 px-3 py-1 rounded-full hover:bg-white/20 transition">
+                <div className="flex flex-row md:flex-col items-start md:items-end gap-3 md:gap-4 mt-3 md:mt-0">
+                  <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full hover:bg-white/30 transition">
                     <button
                       onClick={() => vote(q._id, "up")}
-                      className="flex items-center cursor-pointer justify-center text-gray-200 hover:text-blue-400 transition"
+                      className="flex items-center justify-center text-white hover:text-blue-300 transition"
                     >
                       <FaThumbsUp size={18} />
                     </button>
@@ -178,7 +178,7 @@ export default function AskADev() {
                     onClick={() =>
                       setOpenDiscussion(openDiscussion === q._id ? null : q._id)
                     }
-                    className="mt-2 text-sm border border-white/10 bg-white/20 hover:bg-white/30 cursor-pointer px-4 py-2 rounded-full font-medium transition"
+                    className="text-sm border border-white/20 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full font-medium transition"
                   >
                     {openDiscussion === q._id
                       ? "Hide Discussion"
@@ -188,14 +188,18 @@ export default function AskADev() {
               </div>
 
               {openDiscussion === q._id && (
-                <div className="mt-4 bg-white/10 backdrop-blur-md p-4 rounded-lg border border-white/10">
+                <div className="mt-4 bg-white/20 backdrop-blur-sm p-4 rounded-lg border border-white/20 space-y-3">
                   {q.comments.length === 0 && (
-                    <p className="text-gray-300">No comments yet</p>
+                    <p className="text-white/70">No comments yet</p>
                   )}
+
                   {q.comments.map((c, i) => (
-                    <div key={i} className="bg-black/30 p-3 rounded mb-2">
-                      <p className="text-lg text-white">{c.text}</p>
-                      <p className="text-sm text-gray-300 mt-1">— {c.user}</p>
+                    <div
+                      key={i}
+                      className="bg-black/50 p-3 rounded hover:bg-black/40 transition"
+                    >
+                      <p className="text-white">{c.text}</p>
+                      <p className="text-sm text-white/70 mt-1">— {c.user}</p>
                     </div>
                   ))}
 
@@ -211,9 +215,9 @@ export default function AskADev() {
                     <input
                       name="comment"
                       placeholder="Write a comment..."
-                      className="flex-1 w-full sm:w-auto border border-white/20 text-white px-3 py-2 rounded placeholder:text-gray-300 focus:ring-2 focus:ring-blue-400"
+                      className="flex-1 w-full sm:w-auto border border-white/30 text-white px-3 py-2 rounded placeholder:text-white/60 focus:ring-2 focus:ring-[#00CFFF] bg-white/10"
                     />
-                    <button className="bg-blue-500 cursor-pointer text-sm sm:text-base w-full sm:w-auto px-4 py-2 rounded">
+                    <button className="bg-gradient-to-tr from-[#0178FF] to-[#00CFFF] text-white px-4 py-2 rounded transition hover:scale-105 w-full sm:w-auto">
                       Comment
                     </button>
                   </form>
@@ -229,14 +233,17 @@ export default function AskADev() {
           if (!user) return toast.error("Please login first!");
           setOpenModal(true);
         }}
-        className="fixed bottom-8 right-8 bg-gradient-to-l from-[#0178ff] to-black font-semibold px-6 py-4 rounded-full shadow-2xl text-white cursor-pointer transition"
+        className="fixed bottom-8 right-8 bg-gradient-to-tr from-[#0147FF] to-[#00CFFF] font-semibold px-6 py-4 rounded-full shadow-xl text-white cursor-pointer hover:scale-105 hover:shadow-2xl transition-transform duration-200"
       >
         Ask Question
       </button>
 
       {openModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center">
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl w-full max-w-lg text-white border border-white/20">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4 py-6">
+          <div
+            className="bg-white/10 backdrop-blur-md p-6 rounded-2xl w-full max-w-lg text-white border border-white/20 
+                    max-h-[90vh] overflow-y-auto shadow-lg"
+          >
             <h2 className="text-2xl mb-4 font-semibold text-white text-center">
               Ask a Question
             </h2>
@@ -245,7 +252,7 @@ export default function AskADev() {
               placeholder="Title"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full p-3 mb-3 bg-white/10 text-white rounded placeholder:text-gray-300 border border-white/20 focus:ring-2 focus:ring-blue-300"
+              className="w-full p-3 mb-3 bg-white/10 text-white rounded placeholder:text-white/60 border border-white/20 focus:ring-2 focus:ring-[#00CFFF]"
             />
             <textarea
               placeholder="Description"
@@ -254,16 +261,16 @@ export default function AskADev() {
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
               }
-              className="w-full p-3 mb-3 bg-white/10 text-white rounded placeholder:text-gray-300 border border-white/20 focus:ring-2 focus:ring-blue-300"
+              className="w-full p-3 mb-3 bg-white/10 text-white rounded placeholder:text-white/60 border border-white/20 focus:ring-2 focus:ring-[#00CFFF]"
             />
             <input
               placeholder="Tags (comma separated)"
               value={form.tags}
               onChange={(e) => setForm({ ...form, tags: e.target.value })}
-              className="w-full p-3 mb-4 bg-white/10 text-white rounded placeholder:text-gray-300 border border-white/20 focus:ring-2 focus:ring-blue-300"
+              className="w-full p-3 mb-4 bg-white/10 text-white rounded placeholder:text-white/60 border border-white/20 focus:ring-2 focus:ring-[#00CFFF]"
             />
 
-            <div className="flex justify-end gap-3">
+            <div className="flex flex-col sm:flex-row justify-end gap-3">
               <button
                 onClick={() => setOpenModal(false)}
                 className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded transition"
@@ -272,7 +279,7 @@ export default function AskADev() {
               </button>
               <button
                 onClick={postQuestion}
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-400 rounded transition"
+                className="px-4 py-2 bg-gradient-to-tr from-[#0178FF] to-[#00CFFF] hover:scale-105 rounded transition"
               >
                 Post
               </button>
