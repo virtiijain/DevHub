@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
-export default function AgendaSection() {
+export default function Tracks() {
   const agenda = [
     {
       day: "Track 1",
@@ -61,9 +62,11 @@ export default function AgendaSection() {
         </div>
 
         <div className="flex justify-center mt-12">
-          <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#0A37FF] to-[#041B80] text-white text-lg flex items-center gap-2 hover:opacity-90 transition">
-            Explore All Tracks <ArrowUpRight />
-          </button>
+          <Link href="/signup">
+            <button className="px-8 py-4 rounded-full cursor-pointer bg-gradient-to-r from-[#0A37FF] to-[#041B80] text-white text-lg flex items-center gap-2 hover:opacity-90 transition">
+              Explore All Tracks <ArrowUpRight />
+            </button>
+          </Link>
         </div>
       </div>
     </div>

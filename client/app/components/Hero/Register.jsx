@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-export default function RegisterSection() {
+export default function Register() {
   return (
     <div className="min-h-screen px-6 md:px-16 py-10 md:py-20 flex flex-col gap-16">
       <div className="flex flex-col md:flex-row justify-between w-full max-w-7xl mx-auto">

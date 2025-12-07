@@ -1,22 +1,22 @@
-import Hero from "./components/Hero";
-import Conference from "./components/Conference";
-import RegisterSection from "./components/RegisterSection";
-import WhyJoin from "./components/Why";
-import AgendaSection from "./components/AgendaSection";
-import ScrollVelocity from "./components/ScrollVelocity";
+import Hero from "./components/Hero/Hero";
+import Widget from "./components/Hero/Widget";
+import Register from "./components/Hero/Register";
+import WhyJoin from "./components/Hero/Why";
+import Tracks from "./components/Hero/Tracks";
+import ScrollVelocity from "./components/Hero/ScrollVelocity";
 
 export default function Home() {
   return (
     <>
       <Hero />
       <ScrollVelocity
-        texts={["Code. Share. Grow.", "Network With Developers"]}
+        texts={["Code. Connect. Collaborate.", "Grow Your Dev Network."]}
         velocity={100}
       />
-      <Conference />
-      <AgendaSection />
+      <Widget />
+      <Tracks />
       <WhyJoin />
-      <RegisterSection />
+      <Register />
     </>
   );
 }

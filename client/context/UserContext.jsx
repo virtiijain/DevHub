@@ -10,7 +10,6 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // LOAD USER ON REFRESH
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -40,7 +39,7 @@ export const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
-        user,          // <-- THE MAIN USER OBJECT
+        user,
         setUser,
         logout,
         loading,

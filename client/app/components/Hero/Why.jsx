@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function WhyAttend() {
+export default function WhyJoin() {
   const items = [
     {
       title: "LEARN FROM THE COMMUNITY",

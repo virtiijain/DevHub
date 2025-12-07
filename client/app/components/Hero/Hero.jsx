@@ -1,7 +1,8 @@
 "use client";
-import Button from "./Button";
+import Button from "../Button";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -10,7 +11,7 @@ export default function Hero() {
         <div className="relative z-20">
           <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-8 text-center sm:text-left">
             <p className="text-sm sm:text-base">BUILD IN PUBLIC</p>
-            <p className="text-sm sm:text-base">Ask Devs • Share Progress</p>
+            <p className="text-sm sm:text-base">Connect • Share • Grow</p>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-8xl font-bold leading-tight text-center sm:text-left">
@@ -18,23 +19,25 @@ export default function Hero() {
           </h1>
 
           <p className="text-sm sm:text-base lg:text-lg mb-6 tracking-normal text-center sm:text-left">
-            Post your work, ask technical doubts, and connect with developers
-            who are building real projects. Get feedback, improve faster, and
-            grow with the community.
+            Share your projects, ask technical questions, and collaborate with
+            developers building in public. Get feedback, learn faster, and grow
+            your skills with the DevHub community.
           </p>
 
           <div className="flex justify-center sm:justify-start">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-[#0147FF] to-[#0149ff53] rounded-3xl text-white hover:opacity-90"
-            >
-              Join DevHub
-            </Button>
+            <Link href="/signup">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#0147FF] to-[#0149ff53] cursor-pointer rounded-3xl text-white hover:opacity-90"
+              >
+                Join DevHub
+              </Button>
+            </Link>
           </div>
         </div>
 
         <motion.div
-          className="absolute bottom-10 right-6 sm:right-8 lg:right-12"
+          className="absolute bottom-10 right-6 hidden sm:block lg:right-12"
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
           style={{ transformOrigin: "50% 50%" }}
