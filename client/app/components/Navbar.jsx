@@ -1,12 +1,18 @@
 "use client";
 import { useUser } from "../../context/UserContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const { user, logout, loading } = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hasSignedUp, setHasSignedUp] = useState(false);
+
+  useEffect(() => {
+    const flag = localStorage.getItem("hasSignedUp");
+    setHasSignedUp(flag === "true");
+  }, []);
 
   if (loading) return null;
 
@@ -17,13 +23,12 @@ export default function Navbar() {
   ];
 
   const authLinks = !user
-    ? [
-        { href: "/login", label: "Login" },
-        { href: "/signup", label: "Signup" },
-      ]
+    ? hasSignedUp
+      ? [{ href: "/login", label: "Login" }]
+      : [{ href: "/signup", label: "Signup" }]
     : [
         { href: "/profile", label: "Profile" },
-        { href: "#", label: "Logout", action: logout, isButton: true },
+        { label: "Logout", action: logout, isButton: true },
       ];
 
   const handleClick = (action) => {
@@ -61,7 +66,7 @@ export default function Navbar() {
       </button>
 
       {menuOpen && (
-        <div className="absolute top-20 left-0 w-full bg-blue-700 text-white flex flex-col pl-8 space-y-6 py-6 font-medium shadow-md md:hidden z-50">
+        <div className="absolute top-20 left-0 w-full bg-blue-700 text-white flex flex-col pl-8 space-y-6 py-6 md:hidden z-50">
           {[...commonLinks, ...authLinks].map((item, idx) =>
             item.isButton ? (
               <button
