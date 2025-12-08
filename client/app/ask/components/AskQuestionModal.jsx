@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
-const API_BASE = "http://localhost:8080";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 const socket = io(API_BASE);
 
 export default function AskQuestionModal({ setOpenModal, setQuestions, user }) {

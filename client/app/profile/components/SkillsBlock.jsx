@@ -2,13 +2,14 @@ import { useState } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa";
 
 export default function SkillsBlock({ user, setUser, token }) {
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
   const [editing, setEditing] = useState(false);
   const [newSkill, setNewSkill] = useState("");
 
   const addSkill = async () => {
     if (!newSkill.trim()) return;
     try {
-      const res = await fetch("http://localhost:8080/api/profile/skill", {
+      const res = await fetch(`${API_BASE}/api/profile/skill`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,8 +28,8 @@ export default function SkillsBlock({ user, setUser, token }) {
 
   const removeSkill = async (skill) => {
     try {
-      const filtered = user.skills.filter((s) => s !== skill);
-      await fetch("http://localhost:8080/api/profile", {
+      const filtered = (user.skills || []).filter((s) => s !== skill);
+      await fetch(`${API_BASE}/api/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -46,26 +47,17 @@ export default function SkillsBlock({ user, setUser, token }) {
     <div className="bg-white/10 border border-white/20 p-6 rounded-2xl">
       <div className="flex justify-between items-center mb-3">
         <h2 className="text-2xl font-semibold">Skills</h2>
-        <button
-          onClick={() => setEditing(!editing)}
-          className="p-1 bg-white/20 rounded-full hover:bg-white/30"
-        >
+        <button onClick={() => setEditing(!editing)} className="p-1 bg-white/20 rounded-full hover:bg-white/30">
           <FaPlus />
         </button>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {user.skills.length ? (
+        {(user.skills || []).length ? (
           user.skills.map((s, i) => (
-            <span
-              key={i}
-              className="flex items-center gap-2 px-3 py-1 bg-white/20 text-white text-sm rounded-full border border-white/30"
-            >
+            <span key={i} className="flex items-center gap-2 px-3 py-1 bg-white/20 text-white text-sm rounded-full border border-white/30">
               {s}
-              <FaTrash
-                className="cursor-pointer text-xs hover:text-red-300"
-                onClick={() => removeSkill(s)}
-              />
+              <FaTrash className="cursor-pointer text-xs hover:text-red-300" onClick={() => removeSkill(s)} />
             </span>
           ))
         ) : (
@@ -82,10 +74,7 @@ export default function SkillsBlock({ user, setUser, token }) {
             onChange={(e) => setNewSkill(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addSkill()}
           />
-          <button
-            onClick={addSkill}
-            className="px-4 py-2 bg-white/30 rounded-lg hover:bg-white/40 transition"
-          >
+          <button onClick={addSkill} className="px-4 py-2 bg-white/30 rounded-lg hover:bg-white/40 transition">
             Add
           </button>
         </div>

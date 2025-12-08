@@ -7,6 +7,7 @@ import ProjectsBlock from "./components/ProjectsBlock";
 import AboutBlock from "./components/AboutBlock";
 
 export default function ProfilePage() {
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE; 
   const [user, setUser] = useState({
     name: "",
     username: "",
@@ -29,11 +30,12 @@ export default function ProfilePage() {
 
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/profile", {
+        const res = await fetch(`${API_BASE}/api/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
+
         setUser({
           name: data.name || "",
           username: data.username || "",
@@ -47,11 +49,12 @@ export default function ProfilePage() {
         setLoading(false);
       }
     };
+
     fetchProfile();
-  }, [token]);
+  }, [token, API_BASE]);
 
   if (loading)
-    return <p className="text-center mt-10 text-white/80">Loading...</p>;
+    return <p className="text-center mt-10 text-white/80">Loading profile...</p>;
 
   return (
     <div className="min-h-screen px-6 py-10 bg-[#0147FF] text-white max-w-6xl mx-auto space-y-10">
