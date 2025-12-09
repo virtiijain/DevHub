@@ -42,12 +42,21 @@ export default function AskADev() {
     <div className="min-h-screen bg-[#0147FF] px-4 py-10 text-white">
       <QuestionList questions={questions} setQuestions={setQuestions} />
       <button
-        onClick={() => !user ? toast.error("Please login!") : setOpenModal(true)}
+        onClick={() =>
+          !user
+            ? toast.error("Please login or sign up to continue!")
+            : setOpenModal(true)
+        }
         className="fixed border rounded py-2 px-3 cursor-pointer bottom-8 right-8 ..."
       >
         Ask Question
       </button>
-      {openModal && <AskQuestionModal setOpenModal={setOpenModal} setQuestions={setQuestions} />}
+      {openModal && (
+        <AskQuestionModal
+          setOpenModal={setOpenModal}
+          setQuestions={setQuestions}
+        />
+      )}
     </div>
   );
 }
