@@ -9,7 +9,7 @@ export default function AskQuestionModal({ setOpenModal, setQuestions, user }) {
   const [form, setForm] = useState({ title: "", description: "", tags: "" });
 
   const postQuestion = async () => {
-    if (!user) return toast.error("Please login to post a question");
+    if (!user) return toast.error("Please login or sign up to continue!");
 
     try {
       const res = await fetch(`${API_BASE}/api/questions`, {
