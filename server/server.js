@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import http from "http";
 import { Server as IOServer } from "socket.io";
-
+import { swaggerUi, swaggerSpec } from "./swagger.js";
 import questionRoutes from "./routes/questions.js";
 import authRoutes from "./routes/auth.js";
 import profileRoute from "./routes/profile.js";
@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
     console.log("Socket disconnected:", socket.id);
   });
 });
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/questions", questionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoute);

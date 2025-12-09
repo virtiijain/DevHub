@@ -3,6 +3,26 @@ import Question from "../models/Question.js";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Questions
+ *   description: Question management routes
+ */
+
+/**
+ * @swagger
+ * /api/questions:
+ *   get:
+ *     summary: Get all questions
+ *     tags: [Questions]
+ *     responses:
+ *       200:
+ *         description: Returns a list of questions
+ *       500:
+ *         description: Server error
+ */
+
 router.get("/", async (req, res) => {
   try {
     const questions = await Question.find().sort({ createdAt: -1 });
@@ -11,6 +31,40 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+/**
+ * @swagger
+ * /api/questions:
+ *   post:
+ *     summary: Create a new question
+ *     tags: [Questions]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - description
+ *               - user
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               user:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Question created successfully
+ *       500:
+ *         description: Server error
+ */
 
 router.post("/", async (req, res) => {
   const { title, description, tags, user } = req.body;
@@ -26,6 +80,42 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+/**
+ * @swagger
+ * /api/questions/{id}/comments:
+ *   post:
+ *     summary: Add a comment to a question
+ *     tags: [Questions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Question ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - user
+ *               - text
+ *             properties:
+ *               user:
+ *                 type: string
+ *               text:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Comment added successfully
+ *       404:
+ *         description: Question not found
+ *       500:
+ *         description: Server error
+ */
 
 router.post("/:id/comments", async (req, res) => {
   const { id } = req.params;
@@ -46,6 +136,41 @@ router.post("/:id/comments", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+
+/**
+ * @swagger
+ * /api/questions/{id}/vote:
+ *   post:
+ *     summary: Upvote or downvote a question
+ *     tags: [Questions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Question ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - type
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 enum: [up, down]
+ *     responses:
+ *       200:
+ *         description: Vote updated successfully
+ *       404:
+ *         description: Question not found
+ *       500:
+ *         description: Server error
+ */
 
 router.post("/:id/vote", async (req, res) => {
   const { id } = req.params;

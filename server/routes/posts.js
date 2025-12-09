@@ -4,6 +4,48 @@ import { requireAuth } from "../middleware/auth.js";
 
 const router = express.Router();
 
+
+/**
+ * @swagger
+ * tags:
+ *   name: Posts
+ *   description: Post management routes
+ */
+
+/**
+ * @swagger
+ * /api/posts:
+ *   post:
+ *     summary: Create a new post
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               text:
+ *                 type: string
+ *               project:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               image:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Post created successfully
+ *       500:
+ *         description: Server error
+ */
+
 router.post("/", requireAuth, async (req, res) => {
   try {
     const { text, project, type, tags, image } = req.body;
@@ -31,6 +73,19 @@ router.post("/", requireAuth, async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/posts:
+ *   get:
+ *     summary: Get all posts
+ *     tags: [Posts]
+ *     responses:
+ *       200:
+ *         description: Returns list of posts
+ *       500:
+ *         description: Server error
+ */
+
 router.get("/", async (req, res) => {
   try {
     const posts = await Post.find({})
@@ -42,6 +97,30 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+/**
+ * @swagger
+ * /api/posts/{id}/like:
+ *   post:
+ *     summary: Like or unlike a post
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Post ID
+ *     responses:
+ *       200:
+ *         description: Post liked/unliked successfully
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Server error
+ */
 
 router.post("/:id/like", requireAuth, async (req, res) => {
   try {
@@ -68,6 +147,41 @@ router.post("/:id/like", requireAuth, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+/**
+ * @swagger
+ * /api/posts/{id}/comment:
+ *   post:
+ *     summary: Comment on a post
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Post ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               text:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Comment added successfully
+ *       400:
+ *         description: Comment cannot be empty
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Server error
+ */
 
 router.post("/:id/comment", requireAuth, async (req, res) => {
   try {
