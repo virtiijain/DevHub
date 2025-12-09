@@ -4,7 +4,7 @@ let socket = null;
 
 export const getSocket = () => {
   if (!socket) {
-    socket = io("http://localhost:8080", {
+    socket = io("https://devhub-server-zugl.onrender.com", {
       transports: ["websocket"],
       withCredentials: true,
     });
