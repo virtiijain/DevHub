@@ -1,6 +1,6 @@
 # DevHub
 
-DevHub is a clean, straight-up platform for developers who want to build in public, share their work, ask questions, and showcase their learning journey. No drama — just a space where devs can vibe, grow, and connect.
+DevHub is a clean, straight-up platform for developers who want to build in public, share their work, ask questions, and showcase their learning journey. Just a space where devs can vibe, grow, and connect.
 
 **LINK:- https://devvhubb.vercel.app/**
 
