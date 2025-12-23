@@ -10,7 +10,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 const socket = io(API_BASE);
 
 export default function AskADev() {
-  const { user } = useUser();
+  const { user, loading } = useUser(); 
   const [questions, setQuestions] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
@@ -31,6 +31,7 @@ export default function AskADev() {
         prev.map((q) => (q._id === updatedQ._id ? updatedQ : q))
       )
     );
+
     return () => {
       socket.off("newQuestion");
       socket.off("newComment");
@@ -38,19 +39,27 @@ export default function AskADev() {
     };
   }, []);
 
+  const handleAskClick = () => {
+    if (loading) return; // ⬅️ wait for auth
+    if (!user) {
+      toast.error("Please login or sign up to continue!");
+    } else {
+      setOpenModal(true);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0147FF] px-4 py-10 text-white">
       <QuestionList questions={questions} setQuestions={setQuestions} />
+
       <button
-        onClick={() =>
-          !user
-            ? toast.error("Please login or sign up to continue!")
-            : setOpenModal(true)
-        }
-        className="fixed border rounded py-2 px-3 cursor-pointer bottom-8 right-8 ..."
+        onClick={handleAskClick}
+        disabled={loading}
+        className="fixed border rounded py-2 px-3 cursor-pointer bottom-8 right-8 disabled:opacity-60"
       >
         Ask Question
       </button>
+
       {openModal && (
         <AskQuestionModal
           setOpenModal={setOpenModal}

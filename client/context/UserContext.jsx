@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const UserContext = createContext();
+const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -18,14 +18,25 @@ export const UserProvider = ({ children }) => {
       return;
     }
 
-    fetch("http://localhost:8080/api/auth/profile", {
-      headers: { Authorization: `Bearer ${token}` },
+    const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
+
+    fetch(`${API_BASE}/api/auth/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Unauthorized");
+        return res.json();
+      })
       .then((data) => {
-        if (data.user) {
+        if (data?.user) {
           setUser(data.user);
         }
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        setUser(null);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -37,17 +48,16 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider
-      value={{
-        user,
-        setUser,
-        logout,
-        loading,
-      }}
-    >
+    <UserContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
     </UserContext.Provider>
   );
 };
 
-export const useUser = () => useContext(UserContext);
+export const useUser = () => {
+  const ctx = useContext(UserContext);
+  if (!ctx) {
+    throw new Error("useUser must be used inside UserProvider");
+  }
+  return ctx;
+};
